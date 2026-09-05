@@ -1,6 +1,9 @@
 name: Build and push Image
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   Build-image:
