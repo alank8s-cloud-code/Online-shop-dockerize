@@ -4,7 +4,7 @@
 
 FROM node:22 AS build
 
-RUN apk update && apk upgrade  --no-cache
+RUN apt-get update && apk upgrade  --no-cache
 
 # set the working directory inside the container
 
