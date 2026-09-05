@@ -1,4 +1,4 @@
-﻿import {createContext, useState, useContext, useRef} from 'react';
+﻿import {createContext, useState, useContext} from 'react';
 
 const NavBarContext = createContext();
 

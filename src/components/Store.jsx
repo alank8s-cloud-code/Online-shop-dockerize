@@ -59,15 +59,15 @@ export function Store() {
                     </Col>
                 </Row>
                 <Row md={2} xs={1} lg={3} className="g-3">
-                    {filteredProducts.map(item => (
-                        <Col key={item.id || Math.random()}>
+                    {filteredProducts.map((item, index) => (
+                        <Col key={item.id ?? index}>
                             <StoreItem {...item} />
                         </Col>
                     ))}
                 </Row>
                 {filteredProducts.length === 0 && searchQuery && (
                     <div className="text-center mt-4">
-                        <h4>No products found matching "{searchQuery}"</h4>
+                        <h4>No products found matching &quot;{searchQuery}&quot;</h4>
                     </div>
                 )}
             </Container>

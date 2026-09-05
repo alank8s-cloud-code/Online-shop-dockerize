@@ -41,7 +41,7 @@ export default function Checkout() {
             
             // Redirect to home page
             navigate("/");
-        } catch (error) {
+        } catch {
             toast.error("Failed to process payment. Please try again.", {
                 position: "top-right",
                 autoClose: 3000,

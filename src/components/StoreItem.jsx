@@ -4,10 +4,9 @@ import { useShoppingCart } from "../context/ShoppingCartContext";
 import { formatCurrency } from "../utilities/formatCurrency";
 
 export function StoreItem({ id, name, price, imgUrl, brand, category, description, rating, stock }) {
-    const { getItemQuantity, increaseCartQuantity } = useShoppingCart();
+    const { increaseCartQuantity } = useShoppingCart();
     const [showModal, setShowModal] = useState(false);
     const [imageError, setImageError] = useState(false);
-    const quantity = getItemQuantity(id);
 
     const handleImageError = () => {
         setImageError(true);

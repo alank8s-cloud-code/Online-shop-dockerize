@@ -2,7 +2,7 @@
 import Button from "react-bootstrap/Button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faXmark, faSpinner} from "@fortawesome/free-solid-svg-icons";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useShoppingItems} from "../../context/ShoppingItemsContext.jsx";
 import {toast} from 'react-toastify';
 import {Zoom, Flip} from 'react-toastify';
@@ -27,36 +27,37 @@ const customStyles = {
 
 export default function UpdateProductModal({modalIsOpen, closeModal, itemToUpdate})
 {
-    const [name, setName] = useState('')
-    const [price, setPrice] = useState('')
-    const [imageUrl, setImageUrl] = useState('')
+    const [name, setName] = useState(itemToUpdate?.name ?? '')
+    const [price, setPrice] = useState(itemToUpdate?.price ?? '')
+    const [imageUrl, setImageUrl] = useState(itemToUpdate?.imgUrl ?? '')
     const {updateProduct} = useShoppingItems();
     const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false)
-    const [isDataIdentical, setIsDataIdentical] = useState(false)
 
-    useEffect(() =>
+    // Keep track of the previously seen item so we can detect when a *different*
+    // item is being edited, and re-seed the form fields for it. This replaces the
+    // old "sync state from prop in an effect" pattern, which triggers cascading
+    // renders (react-hooks/set-state-in-effect).
+    const [prevItemToUpdate, setPrevItemToUpdate] = useState(itemToUpdate);
+    if (itemToUpdate !== prevItemToUpdate)
     {
-        if (!itemToUpdate) return;
-        setName(itemToUpdate.name);
-        setPrice(itemToUpdate.price)
-        setImageUrl(itemToUpdate.imgUrl)
-
-    }, [itemToUpdate]);
-
-    // Check if the new values are identical to the original ones.
-    useEffect(() =>
-    {
-        if (!itemToUpdate) return;
-
-        // noinspection EqualityComparisonWithCoercionJS
-        setIsDataIdentical(
-            itemToUpdate.name === name &&
-            itemToUpdate.price == price &&
-            itemToUpdate.imgUrl === imageUrl
-        );
-    }, [name, price, imageUrl, itemToUpdate]);
+        setPrevItemToUpdate(itemToUpdate);
+        if (itemToUpdate)
+        {
+            setName(itemToUpdate.name);
+            setPrice(itemToUpdate.price);
+            setImageUrl(itemToUpdate.imgUrl);
+        }
+    }
 
     if (!itemToUpdate) return null;
+
+    // noinspection EqualityComparisonWithCoercionJS
+    // Derived value, computed during render instead of stored in its own state +
+    // effect (react-hooks/set-state-in-effect / "you might not need an effect").
+    const isDataIdentical =
+        itemToUpdate.name === name &&
+        itemToUpdate.price == price &&
+        itemToUpdate.imgUrl === imageUrl;
 
     const updateExistingProduct = async (e) =>
     {
@@ -99,7 +100,6 @@ export default function UpdateProductModal({modalIsOpen, closeModal, itemToUpdat
                 closeButton: true
             })
 
-        setIsDataIdentical(true);
         closeModal();
     };
 

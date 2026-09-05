@@ -24,7 +24,7 @@ export default function Admin() {
                 position: "top-right",
                 theme: "dark"
             });
-        } catch (error) {
+        } catch {
             toast.error("Failed to add product. Please try again.", {
                 position: "top-right",
                 theme: "dark"

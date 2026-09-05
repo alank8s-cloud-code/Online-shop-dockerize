@@ -38,7 +38,7 @@ export function ShoppingCart() {
                 }
             });
             closeCart();
-        } catch (error) {
+        } catch {
             toast.error("Checkout failed. Please try again.", {
                 position: "top-right",
                 autoClose: 3000,
