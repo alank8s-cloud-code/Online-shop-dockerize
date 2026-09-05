@@ -1,0 +1,50 @@
+#==============================
+#stage 1: Builder
+#==============================
+
+FROM node:20-alpine AS build
+
+# set the working directory inside the container
+
+WORKDIR /app
+
+# Copy the package files
+
+COPY package*.json .
+
+# Install the dependecies
+
+RUN npm ci 
+
+# Copy the  application source code
+
+COPY . .
+
+# Build the frontend
+
+RUN npm run build
+
+#==============================
+#stage 2: Runtime
+#==============================
+
+FROM nginx:alpine
+
+# set the working directory inside the container
+
+WORKDIR /app
+
+# Copy the built frontend
+
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Copy Nginx configuration
+COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose Nginx port
+
+EXPOSE 80
+
+# Run the application
+
+CMD ["nginx", "-g", "daemon off;"]
