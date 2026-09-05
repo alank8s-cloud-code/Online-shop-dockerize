@@ -22,3 +22,6 @@ jobs:
 
       - name: Check the CVE's
         run: npm audit
+
+      - name: Build the application
+        run: npm run build
