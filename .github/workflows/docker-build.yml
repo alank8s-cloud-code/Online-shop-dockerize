@@ -33,6 +33,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile.multistage
+          push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/online-shopping:latest
             ${{ secrets.DOCKER_USERNAME }}/online-shopping:sha-${{ steps.vars.outputs.sha }}
