@@ -1,1 +1,24 @@
 name: Code-quality
+
+on: workflow_dispatch
+
+jobs:
+  Code-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "20.20.2"
+
+      - name: Install the Dependency
+        run: npm ci
+
+      - name: Check Code quality
+        run: npm run lint
+
+      - name: Check the CVE's
+        run: npm run audit
