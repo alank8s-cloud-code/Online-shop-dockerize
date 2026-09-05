@@ -21,4 +21,4 @@ jobs:
         run: npm run lint
 
       - name: Check the CVE's
-        run: npm run audit
+        run: npm audit
